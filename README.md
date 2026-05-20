@@ -2,25 +2,78 @@
 
 
 ## AIM
-Write the experiment AIM.
+To implement SARSA Learning Algorithm.
 
 ## PROBLEM STATEMENT
-Explain the problem statement.
+The problem might involve teaching an agent to interact optimally with an environment (e.g., gym-walk), where the agent must learn to choose actions that maximize cumulative rewards using RL algorithms like SARSA and Value Iteration.
 
 ## SARSA LEARNING ALGORITHM
-Include the steps involved in the SARSA Learning algorithm
+1.Initialize the Q-table, learning rate α, discount factor γ, exploration rate ϵ, and the number of episodes.<br>
+2. For each episode, start in an initial state s, and choose an action a using the ε-greedy policy.<br>
+3. Take action a, observe the reward r and the next state s′ , and choose the next action a′ using the ε-greedy policy.<br>
+4. Update the Q-value for the state-action pair (s,a) using the SARSA update rule.<br>
+5. Update the current state to s′ and the current action to a′.<br>
+6. Repeat steps 3-5 until the episode reaches a terminal state.<br>
+7. After each episode, decay the exploration rate 𝜖 and learning rate α, if using decay schedules.<br>
+8. Return the Q-table and the learned policy after completing all episodes.<br>
 
 ## SARSA LEARNING FUNCTION
-### Name:
-### Register Number:
+### Name: Nandakesore J
+### Register Number: 212223240103
 
-Include the SARSA Learning function
+```py
+def sarsa(env,
+          gamma=1.0,
+          init_alpha=0.5,
+          min_alpha=0.01,
+          alpha_decay_ratio=0.5,
+          init_epsilon=1.0,
+          min_epsilon=0.1,
+          epsilon_decay_ratio=0.9,
+          n_episodes=3000):
+    nS, nA = env.observation_space.n, env.action_space.n
+    pi_track = []
+    Q = np.zeros((nS, nA), dtype=np.float64)
+    Q_track = np.zeros((n_episodes, nS, nA), dtype=np.float64)
+    select_action = lambda state, Q, epsilon: np.argmax(Q[state]) if np.random.random() > epsilon else np.random.randint(len(Q[state]))
+    alphas = decay_schedule(init_alpha, min_alpha, alpha_decay_ratio, n_episodes)
+    epsilon = decay_schedule(init_epsilon, min_epsilon, epsilon_decay_ratio, n_episodes)
+    for e in tqdm(range(n_episodes), leave=False):
+      state, done = env.reset(), False
+      action = select_action(state, Q, epsilon[e])
+      while not done:
+        next_state, reward, done, _ = env.step(action)
+        next_action = select_action(next_state, Q, epsilon[e])
+        td_target = reward + gamma * Q[next_state][next_action] * (not done)
+        td_error = td_target - Q[state][action]
+        Q[state][action] = Q[state][action] + alphas[e] * td_error
+        state, action = next_state, next_action
+        Q_track[e] = Q
+        pi_track.append(np.argmax(Q, axis=1))
+    V = np.max(Q, axis=1)
+    pi = lambda s: {s:a for s, a in enumerate(np.argmax(Q, axis=1))}[s]
+    return Q, V, pi, Q_track, pi_track
+```
 
 ## OUTPUT:
-Mention the optimal policy, optimal value function , success rate for the optimal policy.
 
-Include plot comparing the state value functions of Monte Carlo method and SARSA learning.
+<img width="392" height="98" alt="image" src="https://github.com/user-attachments/assets/c4599bf6-47fe-437e-b782-b2d95db991c0" /><br>
+
+<img width="556" height="701" alt="image" src="https://github.com/user-attachments/assets/a0a62375-acef-4b9d-8cb4-f5c8a6d0a005" /><br>
+
+<img width="379" height="276" alt="image" src="https://github.com/user-attachments/assets/08df02f3-7603-4cfd-9f0b-4cb79d7bd35f" /><br>
+
+<img width="813" height="712" alt="image" src="https://github.com/user-attachments/assets/d756f4c1-a7df-4cfc-8ed5-828589d95ef9" /><br>
+
+<img width="369" height="281" alt="image" src="https://github.com/user-attachments/assets/28ff5ad3-2300-4ad8-8ca6-fde90120b0cf" /><br>
+
+<img width="827" height="709" alt="image" src="https://github.com/user-attachments/assets/ac7be02d-0c3a-46ba-a967-7b470844e2a4" /><br>
+
+<img width="925" height="373" alt="image" src="https://github.com/user-attachments/assets/1e97fd5d-b964-4504-9e4b-1c042e0ed4f8" /><br>
+
+<img width="923" height="387" alt="image" src="https://github.com/user-attachments/assets/0c275c97-65a5-4dae-b03d-cf406fca8646" /><br>
+
 
 ## RESULT:
 
-Write your result here
+Thus, to implement SARSA learning algorithm is executed successfully.
