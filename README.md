@@ -69,9 +69,9 @@ def sarsa(env,
 
 <img width="827" height="709" alt="image" src="https://github.com/user-attachments/assets/ac7be02d-0c3a-46ba-a967-7b470844e2a4" /><br>
 
-<img width="925" height="373" alt="image" src="https://github.com/user-attachments/assets/1e97fd5d-b964-4504-9e4b-1c042e0ed4f8" /><br>
+<img width="1136" height="405" alt="image" src="https://github.com/user-attachments/assets/ba67ca99-91c4-44ba-83b2-b7b2001e49f5" /><br>
 
-<img width="923" height="387" alt="image" src="https://github.com/user-attachments/assets/0c275c97-65a5-4dae-b03d-cf406fca8646" /><br>
+<img width="1137" height="396" alt="image" src="https://github.com/user-attachments/assets/73c21912-af5d-4816-ae80-6aa0075a8e53" /><br>
 
 
 ## RESULT:
